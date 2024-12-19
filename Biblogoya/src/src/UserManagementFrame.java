@@ -53,6 +53,7 @@ public class UserManagementFrame extends JFrame {
         addButton.addActionListener(e -> addUser());
         editButton.addActionListener(e -> editUser());
         deleteButton.addActionListener(e -> deleteUser());
+<<<<<<< HEAD
         backButton.addActionListener(e -> {
         	openAdminFrame();
         	dispose();
@@ -65,6 +66,13 @@ public class UserManagementFrame extends JFrame {
         new AdminFrame().setVisible(true);
     }
     
+=======
+        backButton.addActionListener(e -> dispose());
+
+        add(mainPanel);
+    }
+
+>>>>>>> branch 'master' of https://github.com/igrandes/Bibliogoya.git
     private void addUser() {
         String name = JOptionPane.showInputDialog(this, "Enter user name:");
         if (name != null && !name.trim().isEmpty()) {
