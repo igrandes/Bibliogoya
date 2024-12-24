@@ -25,7 +25,7 @@ public class UserFrame extends JFrame {
     private static String passwd = "root";
 
     public UserFrame(){
-        setTitle("User View - Available Books");
+        setTitle("Vista de usuarios - Libros disponibles");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -54,9 +54,9 @@ public class UserFrame extends JFrame {
 
         // Create button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton borrowButton = new JButton("Borrow");
-        JButton viewUnavailableButton = new JButton("View Unavailable");
-        JButton backButton = new JButton("Back");
+        JButton borrowButton = new JButton("Prestar");
+        JButton viewUnavailableButton = new JButton("Vista no disponible");
+        JButton backButton = new JButton("Volver");
 
         buttonPanel.add(borrowButton);
         buttonPanel.add(viewUnavailableButton);
@@ -78,19 +78,19 @@ public class UserFrame extends JFrame {
     private void borrowBook() {
         int selectedRow = bookTable.getSelectedRow();
         if (selectedRow >= 0) {
-            if ("Available".equals(tableModel.getValueAt(selectedRow, 2))) {
-                tableModel.setValueAt("Borrowed", selectedRow, 2);
-                JOptionPane.showMessageDialog(this, "Book borrowed successfully!");
+            if ("Disponible".equals(tableModel.getValueAt(selectedRow, 2))) {
+                tableModel.setValueAt("Reservado", selectedRow, 2);
+                JOptionPane.showMessageDialog(this, "Libro prestado satisfactiriamente!");
             } else {
-                JOptionPane.showMessageDialog(this, "Book is not available");
+                JOptionPane.showMessageDialog(this, "el libro no esta disponible");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a book to borrow");
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un libro para prestar");
         }
     }
 
     private void viewUnavailableBooks() {
-        JFrame unavailableFrame = new JFrame("Unavailable Books");
+        JFrame unavailableFrame = new JFrame("Libro no disponible");
         unavailableFrame.setSize(600, 400);
         unavailableFrame.setLocationRelativeTo(null);
 
@@ -99,8 +99,8 @@ public class UserFrame extends JFrame {
         JTable unavailableTable = new JTable(unavailableModel);
         
         // Add sample unavailable books
-        unavailableModel.addRow(new Object[]{"Book 3", "Author 3", "Borrowed"});
-        unavailableModel.addRow(new Object[]{"Book 4", "Author 4", "Reserved"});
+        unavailableModel.addRow(new Object[]{"libro 3", "Autor 3", "Prestado"});
+        unavailableModel.addRow(new Object[]{"libro 4", "Autor 4", "Reservado"});
 
         unavailableFrame.add(new JScrollPane(unavailableTable));
         unavailableFrame.setVisible(true);

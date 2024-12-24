@@ -69,7 +69,7 @@ public class BookManagementFrame extends JFrame {
     private DefaultTableModel tableModel;
 
     public BookManagementFrame() {
-        setTitle("Book Management");
+        setTitle("Gestion de libros");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -80,8 +80,8 @@ public class BookManagementFrame extends JFrame {
         bookTable = new JTable(tableModel);
 
         // Add sample data
-        tableModel.addRow(new Object[]{"Book 1", "Author 1", "Available"});
-        tableModel.addRow(new Object[]{"Book 2", "Author 2", "Borrowed"});
+        tableModel.addRow(new Object[]{"Libro 1", "Autor 1", "Disponible"});
+        tableModel.addRow(new Object[]{"Libro 2", "Autor 2", "Prestado"});
 
         // Create main panel
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
@@ -93,10 +93,10 @@ public class BookManagementFrame extends JFrame {
 
         // Create button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton("Add");
-        JButton editButton = new JButton("Edit");
-        JButton deleteButton = new JButton("Delete");
-        JButton backButton = new JButton("Back");
+        JButton addButton = new JButton("Añadir");
+        JButton editButton = new JButton("Editar");
+        JButton deleteButton = new JButton("Borrar");
+        JButton backButton = new JButton("Volver");
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -116,22 +116,22 @@ public class BookManagementFrame extends JFrame {
     }
 
     private void addBook() {
-        String name = JOptionPane.showInputDialog(this, "Enter book name:");
+        String name = JOptionPane.showInputDialog(this, "Introduzca un nuevo nombre de libro:");
         if (name != null && !name.trim().isEmpty()) {
-            tableModel.addRow(new Object[]{name, "New Author", "Available"});
+            tableModel.addRow(new Object[]{name, "Nuevo Autor", "Disponible"});
         }
     }
 
     private void editBook() {
         int selectedRow = bookTable.getSelectedRow();
         if (selectedRow >= 0) {
-            String newName = JOptionPane.showInputDialog(this, "Enter new book name:",
+            String newName = JOptionPane.showInputDialog(this, "Introduce un nuevo nombre de libro:",
                     tableModel.getValueAt(selectedRow, 0));
             if (newName != null && !newName.trim().isEmpty()) {
                 tableModel.setValueAt(newName, selectedRow, 0);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a book to edit");
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un libro para editar");
         }
     }
 
@@ -140,7 +140,7 @@ public class BookManagementFrame extends JFrame {
         if (selectedRow >= 0) {
             tableModel.removeRow(selectedRow);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a book to delete");
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un libro para eliminar");
         }
     }
 }

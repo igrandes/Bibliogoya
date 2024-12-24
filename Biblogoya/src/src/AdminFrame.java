@@ -43,7 +43,7 @@ import java.awt.*;
 
 public class AdminFrame extends JFrame {
     public AdminFrame() {
-        setTitle("Admin Panel");
+        setTitle("Panel de administracion");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -54,14 +54,14 @@ public class AdminFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Book Management Button
-        JButton bookManagementBtn = new JButton("Book Management");
+        JButton bookManagementBtn = new JButton("Gestion de libros");
         bookManagementBtn.addActionListener(e -> openBookManagement());
         gbc.gridx = 0;
         gbc.gridy = 0;
         mainPanel.add(bookManagementBtn, gbc);
 
         // User Management Button
-        JButton userManagementBtn = new JButton("User Management");
+        JButton userManagementBtn = new JButton("Gestion Usuarios");
         userManagementBtn.addActionListener(e -> openUserManagement());
 >>>>>>> branch 'master' of https://github.com/igrandes/Bibliogoya.git
         gbc.gridx = 0;
@@ -69,7 +69,7 @@ public class AdminFrame extends JFrame {
         mainPanel.add(userManagementBtn, gbc);
 
         // Back Button
-        JButton backBtn = new JButton("Back");
+        JButton backBtn = new JButton("Volver");
         backBtn.addActionListener(e -> {
             new LoginFrame().setVisible(true);
             this.dispose();
