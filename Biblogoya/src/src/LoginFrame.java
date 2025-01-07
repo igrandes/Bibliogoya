@@ -1,28 +1,41 @@
 package src;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginFrame extends JFrame {
+    // Atributos
     private JTextField userField;
     private JPasswordField passField;
     private JButton loginButton;
+    
+    String username = "Mikel";
+    String password = "Garcia";
+    String USER = "root";
+    String PASSWORD = "root";
+    String URL = "jdbc:mysql://localhost:3306/biblioteca";
 
+    // Constructor
     public LoginFrame() {
-    try {
-       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-           if ("Nimbus".equals(info.getName())) {
-               UIManager.setLookAndFeel(info.getClassName());
-               break;
-           }
-       }
-    } catch (Exception e) {
-       e.printStackTrace();
-    }
+        // Configuración de Look and Feel
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-   
+        // Configuración de la ventana principal
         setTitle("Biblioteca Goya - Inicio de Sesión");
         setSize(500, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,12 +50,13 @@ public class LoginFrame extends JFrame {
         logoLabel.setFont(new Font("Arial", Font.BOLD, 24));
         topPanel.add(logoLabel);
 
-        // Panel Central para el Formulario
+        // Panel Central para el Formulario de Inicio de Sesión
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setBackground(new Color(240, 248, 255)); // Fondo celeste claro
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
+        // Campos del formulario
         JLabel userLabel = new JLabel("Usuario:");
         userLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         userField = new JTextField(15);
@@ -58,6 +72,7 @@ public class LoginFrame extends JFrame {
         loginButton.setFocusPainted(false);
         loginButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
+        // Añadir componentes al panel central
         gbc.gridx = 0; gbc.gridy = 0; centerPanel.add(userLabel, gbc);
         gbc.gridx = 1; centerPanel.add(userField, gbc);
         gbc.gridx = 0; gbc.gridy = 1; centerPanel.add(passLabel, gbc);
@@ -71,33 +86,56 @@ public class LoginFrame extends JFrame {
         footer.setForeground(Color.WHITE);
         bottomPanel.add(footer);
 
-        // Añadir a la Ventana Principal
+        // Añadir todo a la ventana principal
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Evento del Botón Login
+        // Evento del Botón de Login
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = userField.getText();
-                String password = new String(passField.getPassword());
+                username = userField.getText();
+                password = new String(passField.getPassword());
 
-                if (username.equals("admin") && password.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido Administrador");
-                    new AdminFrame().setVisible(true);
-                    dispose();
-                } else if (username.equals("user") && password.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido Usuario");
-                    new UserFrame().setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+                // Conexión a la base de datos para hacer el login
+                try {
+                    Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+                    recuperarDatos(conn);
+                } catch (SQLException a) {
+                    a.printStackTrace();
                 }
             }
         });
+
+        // Hacer visible la ventana
         setVisible(true);
     }
 
+    // Método para recuperar los datos de la base de datos
+    private void recuperarDatos(Connection conn) throws SQLException {
+        String sql = "SELECT nombre, apellidos, rol FROM usuarios";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            if (username.equals(rs.getString("nombre")) && password.equals(rs.getString("apellidos"))) {
+                if (rs.getString("rol").equals("Administrador")) {
+                    System.out.println("Administrador encontrado exitosamente");
+                    System.out.println("Logeado");
+                    new AdminFrame().setVisible(true);
+                    dispose();
+                    } else {
+                    System.out.println("Usuario encontrado exitosamente");
+                    System.out.println("Logeado");
+                    new UserFrame();
+                    break;
+                }
+            }
+        }
+    }
+   
+
+    // Método principal para ejecutar la aplicación
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginFrame());
     }
